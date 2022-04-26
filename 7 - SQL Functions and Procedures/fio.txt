@@ -1,0 +1,67 @@
+CREATE FUNCTION fn_getFIO_in_format (@ФИО VARCHAR(50), @Формат INT)
+
+RETURNS  VARCHAR(50) 
+BEGIN
+	DECLARE @res VARCHAR(50)
+	SET @res = ''
+	SET @ФИО =  TRIM(' ' FROM @ФИО) --обрезать в начале и конце
+	SET @res = REPLACE(REPLACE(REPLACE(@ФИО, ' ', '<>'), '><', ''), '<>', ' '); -- пробелы заменить на скобки 
+	IF  @Формат = 1
+	BEGIN
+		SET @res = UPPER(@ФИО)
+	END
+	IF @Формат = 2
+	BEGIN
+		SET @res = LOWER(@ФИО)
+	END
+	IF @Формат = 3
+	BEGIN
+		SET @ФИО = LOWER(@ФИО)
+		DECLARE @index INT
+		SET @index = 1
+		WHILE (@index <= LEN(@ФИО))
+		BEGIN
+			/*
+			Если, текущая буква первая в слове, то записываем в результат эту букву в верхнем регистре. 
+			Функция SUBSTRING() выбирает из строки n символов (например, 1), начиная с символа, стоящем на позиции (например, @index)
+			*/
+			IF(@index = 1 OR (SUBSTRING(@ФИО, @index - 1, 1) = ' ' AND SUBSTRING(@ФИО, @index, 1) != ' '))
+				SET @res = @res + UPPER(SUBSTRING(@ФИО, @index, 1))
+			ELSE
+				SET @res = @res + SUBSTRING(@ФИО, @index, 1)  --Другие символы остаются без изменений
+			SET @index = @index + 1
+		END
+	END
+	/*
+	Формат с инициалами
+	*/
+	IF @Формат = 4
+	BEGIN
+		DECLARE @i INT
+		SET @i = 1
+		
+		WHILE (SUBSTRING(@ФИО, @i, 1) = ' ') --Определение начала первого слова
+			SET @i = @i + 1
+		
+		SET @res = @res + SUBSTRING(@ФИО, @i, CHARINDEX(' ', @ФИО, @i)) --Используя CHARINDEX() поиск пробела после первого слова в @ФИО, начиная с позиции i
+		SET @i = CHARINDEX(' ', @ФИО, @i)
+		
+		WHILE (@i <= LEN(@ФИО) AND @i != 0) --Из оставшейся строки и запись только первых букв следующих слов с точкой
+			BEGIN
+			IF(SUBSTRING(@ФИО, @i, 1) = ' ')
+				SET @i = @i + 1 
+			ELSE
+				BEGIN
+				SET @res = @res + SUBSTRING(@ФИО, @i - 1, 2) + '.'
+				SET @i = CHARINDEX(' ', @ФИО, @i)
+				END
+			END
+	END
+	RETURN @res
+END
+GO
+
+DECLARE @FIO VARCHAR(50)
+SET @FIO = '           Невейков     Андрей  Сергеевич'
+SELECT @FIO AS [Before], dbo.fn_getFIO_in_format(@FIO, 3) AS [After]
+GO

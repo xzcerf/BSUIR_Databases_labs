@@ -1,42 +1,42 @@
 --lab5
 
-CREATE DATABASE Склад_118    -- Вместо ХХХ подставьте свою комбинацию цифр
- ON PRIMARY                   -- Путь D:\Work\X7230XXX\ к файлам
-   ( NAME = Склад_data,       -- базы данных уже должен существовать
-     FILENAME = 'E:\SQL\4\Склад_118__data.mdf',
+CREATE DATABASE Г‘ГЄГ«Г Г¤_118    -- Г‚Г¬ГҐГ±ГІГ® Г•Г•Г• ГЇГ®Г¤Г±ГІГ ГўГјГІГҐ Г±ГўГ®Гѕ ГЄГ®Г¬ГЎГЁГ­Г Г¶ГЁГѕ Г¶ГЁГґГ°
+ ON PRIMARY                   -- ГЏГіГІГј D:\Work\X7230XXX\ ГЄ ГґГ Г©Г«Г Г¬
+   ( NAME = Г‘ГЄГ«Г Г¤_data,       -- ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ ГіГ¦ГҐ Г¤Г®Г«Г¦ГҐГ­ Г±ГіГ№ГҐГ±ГІГўГ®ГўГ ГІГј
+     FILENAME = 'E:\SQL\4\Г‘ГЄГ«Г Г¤_118__data.mdf',
      SIZE = 5MB, 
      MAXSIZE = 75MB,
      FILEGROWTH = 3MB ),
  FILEGROUP Secondary
-   ( NAME = Склад2_data,
-     FILENAME = 'E:\SQL\4\Склад_118__data2.ndf',
+   ( NAME = Г‘ГЄГ«Г Г¤2_data,
+     FILENAME = 'E:\SQL\4\Г‘ГЄГ«Г Г¤_118__data2.ndf',
      SIZE = 3MB, 
      MAXSIZE = 50MB,
      FILEGROWTH = 15% ),
-   ( NAME = Склад3_data,
-     FILENAME = 'E:\SQL\4\Склад_118__data3.ndf',
+   ( NAME = Г‘ГЄГ«Г Г¤3_data,
+     FILENAME = 'E:\SQL\4\Г‘ГЄГ«Г Г¤_118__data3.ndf',
      SIZE = 4MB, 
      FILEGROWTH = 4MB )
  LOG ON
-   ( NAME = Склад_log,
-     FILENAME = 'E:\SQL\4\Склад_118__log.ldf',
+   ( NAME = Г‘ГЄГ«Г Г¤_log,
+     FILENAME = 'E:\SQL\4\Г‘ГЄГ«Г Г¤_118__log.ldf',
      SIZE = 1MB,
      MAXSIZE = 10MB,
      FILEGROWTH = 20% ),
-   ( NAME = Склад2_log,
-     FILENAME = 'E:\SQL\4\Склад_118__log2.ldf',
+   ( NAME = Г‘ГЄГ«Г Г¤2_log,
+     FILENAME = 'E:\SQL\4\Г‘ГЄГ«Г Г¤_118__log2.ldf',
      SIZE = 512KB,
      MAXSIZE = 15MB,
      FILEGROWTH = 10% )
  GO  
 
- USE Склад_118
+ USE Г‘ГЄГ«Г Г¤_118
  GO
 
- CREATE RULE Logical_rule AS @value IN ('Нет', 'Да')
+ CREATE RULE Logical_rule AS @value IN ('ГЌГҐГІ', 'Г„Г ')
  GO
 
- CREATE DEFAULT Logical_default AS 'Нет'
+ CREATE DEFAULT Logical_default AS 'ГЌГҐГІ'
  GO
 
  EXEC sp_addtype Logical, 'char(3)', 'NOT NULL'
@@ -45,198 +45,198 @@ CREATE DATABASE Склад_118    -- Вместо ХХХ подставьте свою комбинацию цифр
  EXEC sp_bindrule 'Logical_rule', 'Logical'
  GO
 
- /* Регион */
- CREATE TABLE Регион (				/* первая команда пакета */
-   КодРегиона	INT  PRIMARY KEY,
-   Страна		VARCHAR(20)  DEFAULT 'Беларусь'  NOT NULL,
-   Область	VARCHAR(20)  NOT NULL,
-   Город		VARCHAR(20)  NOT NULL,
-   Адрес		VARCHAR(50)  NOT NULL,
-   Телефон	CHAR(15)  NULL,
-   Факс		CHAR(15)  NOT NULL  CONSTRAINT CIX_Регион2
+ /* ГђГҐГЈГЁГ®Г­ */
+ CREATE TABLE ГђГҐГЈГЁГ®Г­ (				/* ГЇГҐГ°ГўГ Гї ГЄГ®Г¬Г Г­Г¤Г  ГЇГ ГЄГҐГІГ  */
+   ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г 	INT  PRIMARY KEY,
+   Г‘ГІГ°Г Г­Г 		VARCHAR(20)  DEFAULT 'ГЃГҐГ«Г Г°ГіГ±Гј'  NOT NULL,
+   ГЋГЎГ«Г Г±ГІГј	VARCHAR(20)  NOT NULL,
+   ГѓГ®Г°Г®Г¤		VARCHAR(20)  NOT NULL,
+   ГЂГ¤Г°ГҐГ±		VARCHAR(50)  NOT NULL,
+   Г’ГҐГ«ГҐГґГ®Г­	CHAR(15)  NULL,
+   Г”Г ГЄГ±		CHAR(15)  NOT NULL  CONSTRAINT CIX_ГђГҐГЈГЁГ®Г­2
      UNIQUE  ON Secondary,
-   CONSTRAINT CIX_Регион  UNIQUE (Страна, Область, Город, Адрес)
+   CONSTRAINT CIX_ГђГҐГЈГЁГ®Г­  UNIQUE (Г‘ГІГ°Г Г­Г , ГЋГЎГ«Г Г±ГІГј, ГѓГ®Г°Г®Г¤, ГЂГ¤Г°ГҐГ±)
      ON Secondary
  )
 
-  /* Поставщик */
- CREATE TABLE Поставщик (			/* вторая команда пакета */
-   КодПоставщика	INT  PRIMARY KEY,
-   ИмяПоставщика	VARCHAR(40)  NOT NULL,
-   УсловияОплаты	VARCHAR(30)  DEFAULT 'Предоплата'  NULL,
-   КодРегиона		INT  NULL,
-   Заметки		VARCHAR(MAX)  NULL,
-   CONSTRAINT  FK_Поставщик_Регион  FOREIGN KEY (КодРегиона)
-     REFERENCES  Регион  ON UPDATE CASCADE
+  /* ГЏГ®Г±ГІГ ГўГ№ГЁГЄ */
+ CREATE TABLE ГЏГ®Г±ГІГ ГўГ№ГЁГЄ (			/* ГўГІГ®Г°Г Гї ГЄГ®Г¬Г Г­Г¤Г  ГЇГ ГЄГҐГІГ  */
+   ГЉГ®Г¤ГЏГ®Г±ГІГ ГўГ№ГЁГЄГ 	INT  PRIMARY KEY,
+   Г€Г¬ГїГЏГ®Г±ГІГ ГўГ№ГЁГЄГ 	VARCHAR(40)  NOT NULL,
+   Г“Г±Г«Г®ГўГЁГїГЋГЇГ«Г ГІГ»	VARCHAR(30)  DEFAULT 'ГЏГ°ГҐГ¤Г®ГЇГ«Г ГІГ '  NULL,
+   ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г 		INT  NULL,
+   Г‡Г Г¬ГҐГІГЄГЁ		VARCHAR(MAX)  NULL,
+   CONSTRAINT  FK_ГЏГ®Г±ГІГ ГўГ№ГЁГЄ_ГђГҐГЈГЁГ®Г­  FOREIGN KEY (ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г )
+     REFERENCES  ГђГҐГЈГЁГ®Г­  ON UPDATE CASCADE
  )
 
-  /* Клиент */
- CREATE TABLE Клиент (				/* третья команда пакета */
-   КодКлиента	 	INT  IDENTITY(1,1)  PRIMARY KEY,
-   ИмяКлиента		VARCHAR(40)  NOT NULL,
-   ФИОРуководителя	VARCHAR(60)  NULL,
-   КодРегиона 		INT  NULL,
-   CONSTRAINT  FK_Клиент_Регион  FOREIGN KEY (КодРегиона)
-     REFERENCES  Регион  ON UPDATE CASCADE
+  /* ГЉГ«ГЁГҐГ­ГІ */
+ CREATE TABLE ГЉГ«ГЁГҐГ­ГІ (				/* ГІГ°ГҐГІГјГї ГЄГ®Г¬Г Г­Г¤Г  ГЇГ ГЄГҐГІГ  */
+   ГЉГ®Г¤ГЉГ«ГЁГҐГ­ГІГ 	 	INT  IDENTITY(1,1)  PRIMARY KEY,
+   Г€Г¬ГїГЉГ«ГЁГҐГ­ГІГ 		VARCHAR(40)  NOT NULL,
+   Г”Г€ГЋГђГіГЄГ®ГўГ®Г¤ГЁГІГҐГ«Гї	VARCHAR(60)  NULL,
+   ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г  		INT  NULL,
+   CONSTRAINT  FK_ГЉГ«ГЁГҐГ­ГІ_ГђГҐГЈГЁГ®Г­  FOREIGN KEY (ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г )
+     REFERENCES  ГђГҐГЈГЁГ®Г­  ON UPDATE CASCADE
  )
 
-  /* Валюта */
- CREATE TABLE Валюта (				/* четвертая команда пакета */
-   КодВалюты		CHAR(3)  PRIMARY KEY,
-   ИмяВалюты		VARCHAR(30)  NOT NULL,
-   ШагОкругления 	NUMERIC(10, 4)  DEFAULT 0.01  NULL
-     CHECK (ШагОкругления IN (50, 1, 0.01)),
-   КурсВалюты  	SMALLMONEY  NOT NULL  CHECK (КурсВалюты > 0)
+  /* Г‚Г Г«ГѕГІГ  */
+ CREATE TABLE Г‚Г Г«ГѕГІГ  (				/* Г·ГҐГІГўГҐГ°ГІГ Гї ГЄГ®Г¬Г Г­Г¤Г  ГЇГ ГЄГҐГІГ  */
+   ГЉГ®Г¤Г‚Г Г«ГѕГІГ»		CHAR(3)  PRIMARY KEY,
+   Г€Г¬ГїГ‚Г Г«ГѕГІГ»		VARCHAR(30)  NOT NULL,
+   ГГ ГЈГЋГЄГ°ГіГЈГ«ГҐГ­ГЁГї 	NUMERIC(10, 4)  DEFAULT 0.01  NULL
+     CHECK (ГГ ГЈГЋГЄГ°ГіГЈГ«ГҐГ­ГЁГї IN (50, 1, 0.01)),
+   ГЉГіГ°Г±Г‚Г Г«ГѕГІГ»  	SMALLMONEY  NOT NULL  CHECK (ГЉГіГ°Г±Г‚Г Г«ГѕГІГ» > 0)
  )
 
-  /* Товар */
- CREATE TABLE Товар (				/* пятая команда пакета */
-   КодТовара		INT  PRIMARY KEY,
-   Наименование	VARCHAR(50)  NOT NULL,
-   ЕдиницаИзм  	CHAR(10)  DEFAULT 'штука'  NULL,
-   Цена			MONEY  NULL  CHECK (Цена > 0),
-   КодВалюты		CHAR(3)  DEFAULT 'BYR'  NULL,
-   Расфасован		LOGICAL  NOT NULL,
-   CONSTRAINT  FK_Товар_Валюта  FOREIGN KEY (КодВалюты)
-     REFERENCES  Валюта  ON UPDATE CASCADE
+  /* Г’Г®ГўГ Г° */
+ CREATE TABLE Г’Г®ГўГ Г° (				/* ГЇГїГІГ Гї ГЄГ®Г¬Г Г­Г¤Г  ГЇГ ГЄГҐГІГ  */
+   ГЉГ®Г¤Г’Г®ГўГ Г°Г 		INT  PRIMARY KEY,
+   ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ	VARCHAR(50)  NOT NULL,
+   Г…Г¤ГЁГ­ГЁГ¶Г Г€Г§Г¬  	CHAR(10)  DEFAULT 'ГёГІГіГЄГ '  NULL,
+   Г–ГҐГ­Г 			MONEY  NULL  CHECK (Г–ГҐГ­Г  > 0),
+   ГЉГ®Г¤Г‚Г Г«ГѕГІГ»		CHAR(3)  DEFAULT 'BYR'  NULL,
+   ГђГ Г±ГґГ Г±Г®ГўГ Г­		LOGICAL  NOT NULL,
+   CONSTRAINT  FK_Г’Г®ГўГ Г°_Г‚Г Г«ГѕГІГ   FOREIGN KEY (ГЉГ®Г¤Г‚Г Г«ГѕГІГ»)
+     REFERENCES  Г‚Г Г«ГѕГІГ   ON UPDATE CASCADE
  )
 
-  /* Заказ */
- CREATE TABLE Заказ (				/* шестая команда пакета */
-   КодЗаказа		INT  IDENTITY(1,1)  NOT NULL,
-   КодКлиента	 	INT  NOT NULL,
-   КодТовара   	INT  NOT NULL,
-   Количество		NUMERIC(12, 3)  NULL  CHECK (Количество > 0),
-   ДатаЗаказа	 	DATETIME  DEFAULT getdate()  NULL,
-   СрокПоставки	DATETIME  DEFAULT getdate() + 14  NULL,
-   КодПоставщика	INT  NULL,  					
-   PRIMARY KEY (КодЗаказа, КодКлиента, КодТовара),
-   CONSTRAINT  FK_Заказ_Товар  FOREIGN KEY (КодТовара)  
-     REFERENCES  Товар  ON UPDATE CASCADE ON DELETE CASCADE,
-   CONSTRAINT  FK_Заказ_Клиент  FOREIGN KEY (КодКлиента)
-     REFERENCES  Клиент  ON UPDATE CASCADE ON DELETE CASCADE,
-   CONSTRAINT  FK_Заказ_Поставщик  FOREIGN KEY (КодПоставщика)
-     REFERENCES  Поставщик
+  /* Г‡Г ГЄГ Г§ */
+ CREATE TABLE Г‡Г ГЄГ Г§ (				/* ГёГҐГ±ГІГ Гї ГЄГ®Г¬Г Г­Г¤Г  ГЇГ ГЄГҐГІГ  */
+   ГЉГ®Г¤Г‡Г ГЄГ Г§Г 		INT  IDENTITY(1,1)  NOT NULL,
+   ГЉГ®Г¤ГЉГ«ГЁГҐГ­ГІГ 	 	INT  NOT NULL,
+   ГЉГ®Г¤Г’Г®ГўГ Г°Г    	INT  NOT NULL,
+   ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ®		NUMERIC(12, 3)  NULL  CHECK (ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ® > 0),
+   Г„Г ГІГ Г‡Г ГЄГ Г§Г 	 	DATETIME  DEFAULT getdate()  NULL,
+   Г‘Г°Г®ГЄГЏГ®Г±ГІГ ГўГЄГЁ	DATETIME  DEFAULT getdate() + 14  NULL,
+   ГЉГ®Г¤ГЏГ®Г±ГІГ ГўГ№ГЁГЄГ 	INT  NULL,  					
+   PRIMARY KEY (ГЉГ®Г¤Г‡Г ГЄГ Г§Г , ГЉГ®Г¤ГЉГ«ГЁГҐГ­ГІГ , ГЉГ®Г¤Г’Г®ГўГ Г°Г ),
+   CONSTRAINT  FK_Г‡Г ГЄГ Г§_Г’Г®ГўГ Г°  FOREIGN KEY (ГЉГ®Г¤Г’Г®ГўГ Г°Г )  
+     REFERENCES  Г’Г®ГўГ Г°  ON UPDATE CASCADE ON DELETE CASCADE,
+   CONSTRAINT  FK_Г‡Г ГЄГ Г§_ГЉГ«ГЁГҐГ­ГІ  FOREIGN KEY (ГЉГ®Г¤ГЉГ«ГЁГҐГ­ГІГ )
+     REFERENCES  ГЉГ«ГЁГҐГ­ГІ  ON UPDATE CASCADE ON DELETE CASCADE,
+   CONSTRAINT  FK_Г‡Г ГЄГ Г§_ГЏГ®Г±ГІГ ГўГ№ГЁГЄ  FOREIGN KEY (ГЉГ®Г¤ГЏГ®Г±ГІГ ГўГ№ГЁГЄГ )
+     REFERENCES  ГЏГ®Г±ГІГ ГўГ№ГЁГЄ
  )
  GO
 
- CREATE UNIQUE INDEX  UIX_Поставщик  ON Поставщик (ИмяПоставщика)
+ CREATE UNIQUE INDEX  UIX_ГЏГ®Г±ГІГ ГўГ№ГЁГЄ  ON ГЏГ®Г±ГІГ ГўГ№ГЁГЄ (Г€Г¬ГїГЏГ®Г±ГІГ ГўГ№ГЁГЄГ )
    ON Secondary
- CREATE UNIQUE INDEX  UIX_Клиент  ON Клиент (ИмяКлиента)
+ CREATE UNIQUE INDEX  UIX_ГЉГ«ГЁГҐГ­ГІ  ON ГЉГ«ГЁГҐГ­ГІ (Г€Г¬ГїГЉГ«ГЁГҐГ­ГІГ )
    ON Secondary
- CREATE UNIQUE INDEX  UIX_Валюта  ON Валюта (ИмяВалюты)
+ CREATE UNIQUE INDEX  UIX_Г‚Г Г«ГѕГІГ   ON Г‚Г Г«ГѕГІГ  (Г€Г¬ГїГ‚Г Г«ГѕГІГ»)
    ON Secondary
- CREATE UNIQUE INDEX  UIX_Товар  ON Товар (Наименование)
+ CREATE UNIQUE INDEX  UIX_Г’Г®ГўГ Г°  ON Г’Г®ГўГ Г° (ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ)
    ON Secondary
- CREATE INDEX  IX_Регион  ON Регион (Страна, Город)  ON Secondary
- CREATE INDEX  IX_Товар  ON Товар (ЕдиницаИзм, Наименование)
+ CREATE INDEX  IX_ГђГҐГЈГЁГ®Г­  ON ГђГҐГЈГЁГ®Г­ (Г‘ГІГ°Г Г­Г , ГѓГ®Г°Г®Г¤)  ON Secondary
+ CREATE INDEX  IX_Г’Г®ГўГ Г°  ON Г’Г®ГўГ Г° (Г…Г¤ГЁГ­ГЁГ¶Г Г€Г§Г¬, ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ)
    ON Secondary
- CREATE INDEX  IX_Заказ  ON Заказ (ДатаЗаказа)  ON Secondary
+ CREATE INDEX  IX_Г‡Г ГЄГ Г§  ON Г‡Г ГЄГ Г§ (Г„Г ГІГ Г‡Г ГЄГ Г§Г )  ON Secondary
  GO
 
- INSERT INTO Регион
- VALUES (101, 'Россия', 'Московская', 'Королев', 'ул.Мира, 15',
+ INSERT INTO ГђГҐГЈГЁГ®Г­
+ VALUES (101, 'ГђГ®Г±Г±ГЁГї', 'ГЊГ®Г±ГЄГ®ГўГ±ГЄГ Гї', 'ГЉГ®Г°Г®Г«ГҐГў', 'ГіГ«.ГЊГЁГ°Г , 15',
    '387-23-04', '387-23-05')
 
- INSERT INTO Регион (КодРегиона, Область, Город, Адрес, Факс)
- VALUES (201, '', 'Минск', 'ул.Гикало, 9', '278-83-88')	
+ INSERT INTO ГђГҐГЈГЁГ®Г­ (ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г , ГЋГЎГ«Г Г±ГІГј, ГѓГ®Г°Г®Г¤, ГЂГ¤Г°ГҐГ±, Г”Г ГЄГ±)
+ VALUES (201, '', 'ГЊГЁГ­Г±ГЄ', 'ГіГ«.ГѓГЁГЄГ Г«Г®, 9', '278-83-88')	
 
- INSERT INTO Регион (КодРегиона, Область, Город, Адрес, Факс)
- VALUES (202, 'Минская', 'Воложин', 'ул.Серова, 11', '48-37-92')
+ INSERT INTO ГђГҐГЈГЁГ®Г­ (ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г , ГЋГЎГ«Г Г±ГІГј, ГѓГ®Г°Г®Г¤, ГЂГ¤Г°ГҐГ±, Г”Г ГЄГ±)
+ VALUES (202, 'ГЊГЁГ­Г±ГЄГ Гї', 'Г‚Г®Г«Г®Г¦ГЁГ­', 'ГіГ«.Г‘ГҐГ°Г®ГўГ , 11', '48-37-92')
 
- INSERT INTO Регион (КодРегиона, Область, Город, Адрес, Телефон,
-   Факс)
- VALUES (203, '', 'Минск', 'ул.Кирова, 24', '269-13-76',
+ INSERT INTO ГђГҐГЈГЁГ®Г­ (ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г , ГЋГЎГ«Г Г±ГІГј, ГѓГ®Г°Г®Г¤, ГЂГ¤Г°ГҐГ±, Г’ГҐГ«ГҐГґГ®Г­,
+   Г”Г ГЄГ±)
+ VALUES (203, '', 'ГЊГЁГ­Г±ГЄ', 'ГіГ«.ГЉГЁГ°Г®ГўГ , 24', '269-13-76',
    '269-13-77')	
 
- INSERT INTO Регион (КодРегиона, Область, Город, Адрес, Факс)
- VALUES (204, 'Витебская', 'Полоцк', 'ул.Лесная, 6', '48-24-12')
+ INSERT INTO ГђГҐГЈГЁГ®Г­ (ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г , ГЋГЎГ«Г Г±ГІГј, ГѓГ®Г°Г®Г¤, ГЂГ¤Г°ГҐГ±, Г”Г ГЄГ±)
+ VALUES (204, 'Г‚ГЁГІГҐГЎГ±ГЄГ Гї', 'ГЏГ®Г«Г®Г¶ГЄ', 'ГіГ«.Г‹ГҐГ±Г­Г Гї, 6', '48-24-12')
 
- INSERT INTO Регион 
- VALUES (301, 'Украина', 'Крымская', 'Алушта', 'ул.Франко, 24',
+ INSERT INTO ГђГҐГЈГЁГ®Г­ 
+ VALUES (301, 'Г“ГЄГ°Г ГЁГ­Г ', 'ГЉГ°Г»Г¬Г±ГЄГ Гї', 'ГЂГ«ГіГёГІГ ', 'ГіГ«.Г”Г°Г Г­ГЄГ®, 24',
    NULL, '46-49-16')	
  GO
 
- INSERT INTO Поставщик (КодПоставщика, ИмяПоставщика, КодРегиона)
-VALUES (123, 'ЗАО Магистраль', 101)
-INSERT INTO Поставщик (КодПоставщика, ИмяПоставщика, КодРегиона)
-VALUES (345, 'ЗАО Беллифтмаш', 202)
-INSERT INTO Поставщик
-VALUES (987, 'ООО ”Белцветмет”', 'Отсрочка', 204,
-'Постоянный поставщик')
-INSERT INTO Поставщик (КодПоставщика, ИмяПоставщика, КодРегиона)
-VALUES (789, 'ИП Зеленко В. Я.', 301)
-INSERT INTO Поставщик
-VALUES (567, 'СП ”Полихим”', 'По факту отгрузки', 203,
-'Постоянный поставщик')
+ INSERT INTO ГЏГ®Г±ГІГ ГўГ№ГЁГЄ (ГЉГ®Г¤ГЏГ®Г±ГІГ ГўГ№ГЁГЄГ , Г€Г¬ГїГЏГ®Г±ГІГ ГўГ№ГЁГЄГ , ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г )
+VALUES (123, 'Г‡ГЂГЋ ГЊГ ГЈГЁГ±ГІГ°Г Г«Гј', 101)
+INSERT INTO ГЏГ®Г±ГІГ ГўГ№ГЁГЄ (ГЉГ®Г¤ГЏГ®Г±ГІГ ГўГ№ГЁГЄГ , Г€Г¬ГїГЏГ®Г±ГІГ ГўГ№ГЁГЄГ , ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г )
+VALUES (345, 'Г‡ГЂГЋ ГЃГҐГ«Г«ГЁГґГІГ¬Г Гё', 202)
+INSERT INTO ГЏГ®Г±ГІГ ГўГ№ГЁГЄ
+VALUES (987, 'ГЋГЋГЋ вЂќГЃГҐГ«Г¶ГўГҐГІГ¬ГҐГІвЂќ', 'ГЋГІГ±Г°Г®Г·ГЄГ ', 204,
+'ГЏГ®Г±ГІГ®ГїГ­Г­Г»Г© ГЇГ®Г±ГІГ ГўГ№ГЁГЄ')
+INSERT INTO ГЏГ®Г±ГІГ ГўГ№ГЁГЄ (ГЉГ®Г¤ГЏГ®Г±ГІГ ГўГ№ГЁГЄГ , Г€Г¬ГїГЏГ®Г±ГІГ ГўГ№ГЁГЄГ , ГЉГ®Г¤ГђГҐГЈГЁГ®Г­Г )
+VALUES (789, 'Г€ГЏ Г‡ГҐГ«ГҐГ­ГЄГ® Г‚. Гџ.', 301)
+INSERT INTO ГЏГ®Г±ГІГ ГўГ№ГЁГЄ
+VALUES (567, 'Г‘ГЏ вЂќГЏГ®Г«ГЁГµГЁГ¬вЂќ', 'ГЏГ® ГґГ ГЄГІГі Г®ГІГЈГ°ГіГ§ГЄГЁ', 203,
+'ГЏГ®Г±ГІГ®ГїГ­Г­Г»Г© ГЇГ®Г±ГІГ ГўГ№ГЁГЄ')
 GO
 
-INSERT INTO Клиент
-VALUES ('ГП ”Верас”', 'Прокушев Станислав Игоревич', 202)
-INSERT INTO Клиент (ИмяКлиента, ФИОРуководителя)
-VALUES ('ЧП ”Якорь”', 'Яснюк В. А.')
-INSERT INTO Клиент
-VALUES ('ООО ”Цветной”', 'Музыченко Д. М.', 203)
-INSERT INTO Клиент
-VALUES ('ОАО ”Юрмега”', 'Вишневский Ю. Р.', 301)
-INSERT INTO Клиент (ИмяКлиента, ФИОРуководителя)
-VALUES ('ИП ”Темп”', 'Васько Григорий Терентьевич')
+INSERT INTO ГЉГ«ГЁГҐГ­ГІ
+VALUES ('ГѓГЏ вЂќГ‚ГҐГ°Г Г±вЂќ', 'ГЏГ°Г®ГЄГіГёГҐГў Г‘ГІГ Г­ГЁГ±Г«Г Гў Г€ГЈГ®Г°ГҐГўГЁГ·', 202)
+INSERT INTO ГЉГ«ГЁГҐГ­ГІ (Г€Г¬ГїГЉГ«ГЁГҐГ­ГІГ , Г”Г€ГЋГђГіГЄГ®ГўГ®Г¤ГЁГІГҐГ«Гї)
+VALUES ('Г—ГЏ вЂќГџГЄГ®Г°ГјвЂќ', 'ГџГ±Г­ГѕГЄ Г‚. ГЂ.')
+INSERT INTO ГЉГ«ГЁГҐГ­ГІ
+VALUES ('ГЋГЋГЋ вЂќГ–ГўГҐГІГ­Г®Г©вЂќ', 'ГЊГіГ§Г»Г·ГҐГ­ГЄГ® Г„. ГЊ.', 203)
+INSERT INTO ГЉГ«ГЁГҐГ­ГІ
+VALUES ('ГЋГЂГЋ вЂќГћГ°Г¬ГҐГЈГ вЂќ', 'Г‚ГЁГёГ­ГҐГўГ±ГЄГЁГ© Гћ. Гђ.', 301)
+INSERT INTO ГЉГ«ГЁГҐГ­ГІ (Г€Г¬ГїГЉГ«ГЁГҐГ­ГІГ , Г”Г€ГЋГђГіГЄГ®ГўГ®Г¤ГЁГІГҐГ«Гї)
+VALUES ('Г€ГЏ вЂќГ’ГҐГ¬ГЇвЂќ', 'Г‚Г Г±ГјГЄГ® ГѓГ°ГЁГЈГ®Г°ГЁГ© Г’ГҐГ°ГҐГ­ГІГјГҐГўГЁГ·')
 GO
 
-INSERT INTO Валюта
- VALUES ('BYR', 'Белорусские рубли', 1, 1)
+INSERT INTO Г‚Г Г«ГѕГІГ 
+ VALUES ('BYR', 'ГЃГҐГ«Г®Г°ГіГ±Г±ГЄГЁГҐ Г°ГіГЎГ«ГЁ', 1, 1)
 
- INSERT INTO Валюта (КодВалюты, ИмяВалюты, КурсВалюты)
- VALUES ('RUR', 'Российские рубли', 276)
+ INSERT INTO Г‚Г Г«ГѕГІГ  (ГЉГ®Г¤Г‚Г Г«ГѕГІГ», Г€Г¬ГїГ‚Г Г«ГѕГІГ», ГЉГіГ°Г±Г‚Г Г«ГѕГІГ»)
+ VALUES ('RUR', 'ГђГ®Г±Г±ГЁГ©Г±ГЄГЁГҐ Г°ГіГЎГ«ГЁ', 276)
 
- INSERT INTO Валюта (КодВалюты, ИмяВалюты, КурсВалюты)
- VALUES ('USD', 'Доллары США', 9160)
+ INSERT INTO Г‚Г Г«ГѕГІГ  (ГЉГ®Г¤Г‚Г Г«ГѕГІГ», Г€Г¬ГїГ‚Г Г«ГѕГІГ», ГЉГіГ°Г±Г‚Г Г«ГѕГІГ»)
+ VALUES ('USD', 'Г„Г®Г«Г«Г Г°Г» Г‘ГГЂ', 9160)
 
- INSERT INTO Валюта (КодВалюты, ИмяВалюты, КурсВалюты)
- VALUES ('EUR', 'Евро', 12450)
+ INSERT INTO Г‚Г Г«ГѕГІГ  (ГЉГ®Г¤Г‚Г Г«ГѕГІГ», Г€Г¬ГїГ‚Г Г«ГѕГІГ», ГЉГіГ°Г±Г‚Г Г«ГѕГІГ»)
+ VALUES ('EUR', 'Г…ГўГ°Г®', 12450)
  GO
 
- INSERT INTO Товар
-VALUES (111, 'Монитор 21 дюйм', 'штука', 320, 'USD', 'Нет')
-INSERT INTO Товар
-VALUES (222, 'Мышь беспроводная Canyon', 'штука', 5, 'EUR', 'Нет')
-INSERT INTO Товар
-VALUES (333, 'Зарядное устройство Lenovo', 'штука', 35, 'BYR', 'Да')
-INSERT INTO Товар (КодТовара, Наименование, Цена, Расфасован)
-VALUES (444, 'Моноблок Asus', 1200, 'Нет')
-INSERT INTO Товар (КодТовара, Наименование, Цена, Расфасован)
-VALUES (555, 'Винчестер HDD 120GB', 285000, 'Да')
+ INSERT INTO Г’Г®ГўГ Г°
+VALUES (111, 'ГЊГ®Г­ГЁГІГ®Г° 21 Г¤ГѕГ©Г¬', 'ГёГІГіГЄГ ', 320, 'USD', 'ГЌГҐГІ')
+INSERT INTO Г’Г®ГўГ Г°
+VALUES (222, 'ГЊГ»ГёГј ГЎГҐГ±ГЇГ°Г®ГўГ®Г¤Г­Г Гї Canyon', 'ГёГІГіГЄГ ', 5, 'EUR', 'ГЌГҐГІ')
+INSERT INTO Г’Г®ГўГ Г°
+VALUES (333, 'Г‡Г Г°ГїГ¤Г­Г®ГҐ ГіГ±ГІГ°Г®Г©Г±ГІГўГ® Lenovo', 'ГёГІГіГЄГ ', 35, 'BYR', 'Г„Г ')
+INSERT INTO Г’Г®ГўГ Г° (ГЉГ®Г¤Г’Г®ГўГ Г°Г , ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ, Г–ГҐГ­Г , ГђГ Г±ГґГ Г±Г®ГўГ Г­)
+VALUES (444, 'ГЊГ®Г­Г®ГЎГ«Г®ГЄ Asus', 1200, 'ГЌГҐГІ')
+INSERT INTO Г’Г®ГўГ Г° (ГЉГ®Г¤Г’Г®ГўГ Г°Г , ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ, Г–ГҐГ­Г , ГђГ Г±ГґГ Г±Г®ГўГ Г­)
+VALUES (555, 'Г‚ГЁГ­Г·ГҐГ±ГІГҐГ° HDD 120GB', 285000, 'Г„Г ')
 GO
 
 SET DATEFORMAT dmy
 
-INSERT INTO Заказ
+INSERT INTO Г‡Г ГЄГ Г§
 VALUES (3, 111, 8, '04/09/19', '14/09/19', 567)
-INSERT INTO Заказ
+INSERT INTO Г‡Г ГЄГ Г§
 VALUES (2, 222, 10, '04/01/20', '14/01/20', 987)
-INSERT INTO Заказ
+INSERT INTO Г‡Г ГЄГ Г§
 VALUES (5, 333, 15, '22/02/20', '28/02/20', 789)
-INSERT INTO Заказ
+INSERT INTO Г‡Г ГЄГ Г§
 VALUES (4, 444, 20, '05/04/2020', '20/04/2020', 345)
-INSERT INTO Заказ (КодКлиента, КодТовара, Количество)
+INSERT INTO Г‡Г ГЄГ Г§ (ГЉГ®Г¤ГЉГ«ГЁГҐГ­ГІГ , ГЉГ®Г¤Г’Г®ГўГ Г°Г , ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ®)
 VALUES (1, 555, 25)
 GO
 
- CREATE VIEW Запрос1 AS
-   SELECT TOP 100 PERCENT Товар.Наименование, Заказ.Количество, 
-     Товар.ЕдиницаИзм, Поставщик.ИмяПоставщика
-   FROM Заказ 
-     INNER JOIN Поставщик 
-       ON Заказ.КодПоставщика = Поставщик.КодПоставщика 
-     INNER JOIN Товар 
-       ON Заказ.КодТовара = Товар.КодТовара
-   ORDER BY Товар.Наименование, Заказ.Количество DESC 
+ CREATE VIEW Г‡Г ГЇГ°Г®Г±1 AS
+   SELECT TOP 100 PERCENT Г’Г®ГўГ Г°.ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ, Г‡Г ГЄГ Г§.ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ®, 
+     Г’Г®ГўГ Г°.Г…Г¤ГЁГ­ГЁГ¶Г Г€Г§Г¬, ГЏГ®Г±ГІГ ГўГ№ГЁГЄ.Г€Г¬ГїГЏГ®Г±ГІГ ГўГ№ГЁГЄГ 
+   FROM Г‡Г ГЄГ Г§ 
+     INNER JOIN ГЏГ®Г±ГІГ ГўГ№ГЁГЄ 
+       ON Г‡Г ГЄГ Г§.ГЉГ®Г¤ГЏГ®Г±ГІГ ГўГ№ГЁГЄГ  = ГЏГ®Г±ГІГ ГўГ№ГЁГЄ.ГЉГ®Г¤ГЏГ®Г±ГІГ ГўГ№ГЁГЄГ  
+     INNER JOIN Г’Г®ГўГ Г° 
+       ON Г‡Г ГЄГ Г§.ГЉГ®Г¤Г’Г®ГўГ Г°Г  = Г’Г®ГўГ Г°.ГЉГ®Г¤Г’Г®ГўГ Г°Г 
+   ORDER BY Г’Г®ГўГ Г°.ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ, Г‡Г ГЄГ Г§.ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ® DESC 
  GO
 
-EXEC sp_addlogin 'sql1', '1111', 'Склад_118';
-EXEC sp_addlogin 'sql2', '1111', 'Склад_118';
-EXEC sp_addlogin 'sql3', '1111', 'Склад_118';
-EXEC sp_addlogin 'sql4', '1111', 'Склад_118';
+EXEC sp_addlogin 'sql1', '1111', 'Г‘ГЄГ«Г Г¤_118';
+EXEC sp_addlogin 'sql2', '1111', 'Г‘ГЄГ«Г Г¤_118';
+EXEC sp_addlogin 'sql3', '1111', 'Г‘ГЄГ«Г Г¤_118';
+EXEC sp_addlogin 'sql4', '1111', 'Г‘ГЄГ«Г Г¤_118';
 GO
 
 EXEC sp_addsrvrolemember 'sql1', 'dbcreator'
@@ -248,57 +248,58 @@ EXEC sp_grantdbaccess 'sql3', 'login3'
 EXEC sp_grantdbaccess 'sql4', 'login4'
 GO
 
-EXEC sp_addrole 'Гл.бухгалтер', 'login1'
-EXEC sp_addrole 'Бухгалтера', 'login1'
-EXEC sp_addrole 'Экономисты', 'login1'
+EXEC sp_addrole 'ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°', 'login1'
+EXEC sp_addrole 'ГЃГіГµГЈГ Г«ГІГҐГ°Г ', 'login1'
+EXEC sp_addrole 'ГќГЄГ®Г­Г®Г¬ГЁГ±ГІГ»', 'login1'
 GO
 
 EXEC sp_addrolemember 'db_accessadmin', 'login1'
-EXEC sp_addrolemember 'Гл.бухгалтер', 'login1'
-EXEC sp_addrolemember 'Бухгалтера', 'login2'
-EXEC sp_addrolemember 'Бухгалтера', 'login3'
-EXEC sp_addrolemember 'Бухгалтера', 'Гл.бухгалтер'
-EXEC sp_addrolemember 'Экономисты', 'login4'
-EXEC sp_addrolemember 'Экономисты', 'Гл.бухгалтер'
+EXEC sp_addrolemember 'ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°', 'login1'
+EXEC sp_addrolemember 'ГЃГіГµГЈГ Г«ГІГҐГ°Г ', 'login2'
+EXEC sp_addrolemember 'ГЃГіГµГЈГ Г«ГІГҐГ°Г ', 'login3'
+EXEC sp_addrolemember 'ГЃГіГµГЈГ Г«ГІГҐГ°Г ', 'ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°'
+EXEC sp_addrolemember 'ГќГЄГ®Г­Г®Г¬ГЁГ±ГІГ»', 'login4'
+EXEC sp_addrolemember 'ГќГЄГ®Г­Г®Г¬ГЁГ±ГІГ»', 'ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°'
 GO
 
 GRANT SELECT, INSERT, UPDATE, DELETE
- ON Валюта TO [Гл.бухгалтер] WITH GRANT OPTION
+ ON Г‚Г Г«ГѕГІГ  TO [ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°] WITH GRANT OPTION
 
  GRANT UPDATE
- ON Заказ TO [Гл.бухгалтер] WITH GRANT OPTION
+ ON Г‡Г ГЄГ Г§ TO [ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°] WITH GRANT OPTION
 
  GRANT SELECT
- ON Запрос1 TO [Гл.бухгалтер] WITH GRANT OPTION
+ ON Г‡Г ГЇГ°Г®Г±1 TO [ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°] WITH GRANT OPTION
 
  GRANT UPDATE, DELETE
- ON Клиент TO [Гл.бухгалтер] WITH GRANT OPTION
+ ON ГЉГ«ГЁГҐГ­ГІ TO [ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°] WITH GRANT OPTION
 
  GRANT UPDATE, DELETE
- ON Поставщик TO [Гл.бухгалтер] WITH GRANT OPTION
+ ON ГЏГ®Г±ГІГ ГўГ№ГЁГЄ TO [ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°] WITH GRANT OPTION
 
  GRANT UPDATE, DELETE
- ON Товар TO [Гл.бухгалтер] WITH GRANT OPTION
+ ON Г’Г®ГўГ Г° TO [ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°] WITH GRANT OPTION
 
  GRANT SELECT, INSERT
- ON Заказ TO Бухгалтера
+ ON Г‡Г ГЄГ Г§ TO ГЃГіГµГЈГ Г«ГІГҐГ°Г 
 
  GRANT SELECT, INSERT
- ON Клиент TO Бухгалтера
+ ON ГЉГ«ГЁГҐГ­ГІ TO ГЃГіГµГЈГ Г«ГІГҐГ°Г 
 
  GRANT SELECT, INSERT
- ON Поставщик TO Экономисты
+ ON ГЏГ®Г±ГІГ ГўГ№ГЁГЄ TO ГќГЄГ®Г­Г®Г¬ГЁГ±ГІГ»
 
  GRANT SELECT, INSERT
- ON Товар TO Экономисты
+ ON Г’Г®ГўГ Г° TO ГќГЄГ®Г­Г®Г¬ГЁГ±ГІГ»
 
  GRANT SELECT, INSERT, UPDATE, DELETE
- ON Регион TO public
+ ON ГђГҐГЈГЁГ®Г­ TO public
  GO
 
  DENY UPDATE
- ON Заказ (ДатаЗаказа, СрокПоставки) TO [Гл.бухгалтер] CASCADE 
+ ON Г‡Г ГЄГ Г§ (Г„Г ГІГ Г‡Г ГЄГ Г§Г , Г‘Г°Г®ГЄГЏГ®Г±ГІГ ГўГЄГЁ) TO [ГѓГ«.ГЎГіГµГЈГ Г«ГІГҐГ°] CASCADE 
  GO
+
 
 
 
